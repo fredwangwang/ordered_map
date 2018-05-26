@@ -2,19 +2,20 @@ package orderedmap
 
 import (
 	"fmt"
+	"container/list"
 )
 
 type OrderedMap struct {
 	store  map[interface{}]interface{}
-	mapper map[interface{}]*node
-	root   *node
+	mapper map[interface{}]*list.Element
+	list   *list.List
 }
 
 func NewOrderedMap() *OrderedMap {
 	om := &OrderedMap{
 		store:  make(map[interface{}]interface{}),
-		mapper: make(map[interface{}]*node),
-		root:   newRootNode(),
+		mapper: make(map[interface{}]*list.Element),
+		list:   list.New(),
 	}
 	return om
 }
@@ -33,11 +34,11 @@ func (om *OrderedMap) update(args []*KVPair) {
 
 func (om *OrderedMap) Set(key interface{}, value interface{}) {
 	if _, ok := om.store[key]; ok == false {
-		root := om.root
-		last := root.Prev
-		last.Next = newNode(last, root, key)
-		root.Prev = last.Next
-		om.mapper[key] = last.Next
+		om.list.PushBack(key)
+		//last := root.Prev
+		//last.Next = newNode(last, root, key)
+		//root.Prev = last.Next
+		om.mapper[key] = om.list.Back()
 	}
 	om.store[key] = value
 }
@@ -52,12 +53,9 @@ func (om *OrderedMap) Delete(key interface{}) {
 	if ok {
 		delete(om.store, key)
 	}
-	root, rootFound := om.mapper[key]
-	if rootFound {
-		prev := root.Prev
-		next := root.Next
-		prev.Next = next
-		next.Prev = prev
+	node, found := om.mapper[key]
+	if found {
+		om.list.Remove(node)
 		delete(om.mapper, key)
 	}
 }
@@ -88,28 +86,21 @@ func (om *OrderedMap) UnsafeIter() <-chan *KVPair {
 	keys := make(chan *KVPair)
 	go func() {
 		defer close(keys)
-		var curr *node
-		root := om.root
-		curr = root.Next
-		for curr != root {
-			v, _ := om.store[curr.Value]
-			keys <- &KVPair{curr.Value, v}
-			curr = curr.Next
+		for it := om.list.Front(); it != nil; it = it.Next() {
+			v, _ := om.store[it.Value]
+			keys <- &KVPair{it.Value, v}
 		}
 	}()
 	return keys
 }
 
 func (om *OrderedMap) IterFunc() func() (*KVPair, bool) {
-	var curr *node
-	root := om.root
-	curr = root.Next
+	it := om.list.Front()
 	return func() (*KVPair, bool) {
-		for curr != root {
-			tmp := curr
-			curr = curr.Next
-			v, _ := om.store[tmp.Value]
-			return &KVPair{tmp.Value, v}, true
+		if it != nil {
+			ret := &KVPair{it.Value, om.store[it.Value]}
+			it = it.Next()
+			return ret, true
 		}
 		return nil, false
 	}
@@ -118,4 +109,3 @@ func (om *OrderedMap) IterFunc() func() (*KVPair, bool) {
 func (om *OrderedMap) Len() int {
 	return len(om.store)
 }
-
