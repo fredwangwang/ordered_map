@@ -13,7 +13,7 @@
 
 ## Download and Install 
   
-`go get https://github.com/cevaris/ordered_map.git`
+`go get https://github.com/fredwangwang/orderedmap.git`
 
 
 ## Examples
@@ -25,7 +25,7 @@ package main
 
 import (
     "fmt"
-    "github.com/cevaris/ordered_map"
+    "github.com/fredwangwang/orderedmap"
 )
 
 func main() {
@@ -95,7 +95,7 @@ fmt.Println(om)
 
 Git clone project 
 
-`git clone https://github.com/cevaris/ordered_map.git`  
+`git clone https://github.com/fredwangwang/orderedmap.git`  
   
 Build and install project
 
