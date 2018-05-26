@@ -4,13 +4,8 @@ import (
 	"testing"
 )
 
-type MyStruct struct {
-	a float64
-	b bool
-}
-
 func testStringInt() []*KVPair {
-	var data []*KVPair = make([]*KVPair, 5)
+	var data = make([]*KVPair, 5)
 	data[0] = &KVPair{"test0", 0}
 	data[1] = &KVPair{"test1", 1}
 	data[2] = &KVPair{"test2", 2}
