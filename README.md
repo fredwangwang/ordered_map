@@ -1,6 +1,6 @@
 # Ordered Map for golang
 
-[![Build Status](https://travis-ci.org/cevaris/ordered_map.svg?branch=master)](https://travis-ci.org/cevaris/ordered_map)
+[![Build Status](https://travis-ci.org/fredwangwang/orderedmap.svg?branch=master)](https://travis-ci.org/fredwangwang/orderedmap)
 
 **OrderedMap** is a Python port of OrderedDict implemented in golang. Golang's builtin `map` purposefully randomizes the iteration of stored key/values. **OrderedMap** struct preserves inserted key/value pairs; such that on iteration, key/value pairs are received in inserted (first in, first out) order.
 
@@ -9,11 +9,11 @@
 - Full support Key/Value for all data types
 - Exposes an Iterator that iterates in order of insertion
 - Full Get/Set/Delete map interface
-- Supports Golang v1.3 through v1.9
+- Supports Golang v1.3 through v1.10
 
 ## Download and Install 
   
-`go get https://github.com/fredwangwang/orderedmap.git`
+`go get github.com/fredwangwang/orderedmap`
 
 
 ## Examples
@@ -31,7 +31,7 @@ import (
 func main() {
 
     // Init new OrderedMap
-    om := ordered_map.NewOrderedMap()
+    om := orderedmap.NewOrderedMap()
 
     // Set key
     om.Set("a", 1)
@@ -63,7 +63,7 @@ func main() {
 
 ```go
 n := 100
-om := ordered_map.NewOrderedMap()
+om := orderedmap.NewOrderedMap()
 
 for i := 0; i < n; i++ {
     // Insert data into OrderedMap
@@ -82,7 +82,7 @@ for kv, ok := iter(); ok; kv, ok = iter() {
 ### Custom Structs
 
 ```go
-om := ordered_map.NewOrderedMap()
+om := orderedmap.NewOrderedMap()
 om.Set("one", &MyStruct{1, 1.1})
 om.Set("two", &MyStruct{2, 2.2})
 om.Set("three", &MyStruct{3, 3.3})
