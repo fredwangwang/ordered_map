@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/cevaris/ordered_map"
+	"github.com/fredwangwang/orderedmap"
 )
 
 func GetAndSetExample() {
 	// Init new OrderedMap
-	om := ordered_map.NewOrderedMap()
+	om := orderedmap.NewOrderedMap()
 
 	// Set key
 	om.Set("a", 1)
@@ -33,7 +33,7 @@ func GetAndSetExample() {
 
 func IteratorExample() {
 	n := 100
-	om := ordered_map.NewOrderedMap()
+	om := orderedmap.NewOrderedMap()
 
 	for i := 0; i < n; i++ {
 		// Insert data into OrderedMap
@@ -55,7 +55,7 @@ type MyStruct struct {
 }
 
 func CustomStruct() {
-	om := ordered_map.NewOrderedMap()
+	om := orderedmap.NewOrderedMap()
 	om.Set("one", &MyStruct{1, 1.1})
 	om.Set("two", &MyStruct{2, 2.2})
 	om.Set("three", &MyStruct{3, 3.3})
