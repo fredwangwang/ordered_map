@@ -7,7 +7,7 @@ import (
 
 func GetAndSetExample() {
 	// Init new OrderedMap
-	om := orderedmap.NewOrderedMap()
+	om := orderedmap.New()
 
 	// Set key
 	om.Set("a", 1)
@@ -33,11 +33,11 @@ func GetAndSetExample() {
 
 func IteratorExample() {
 	n := 100
-	om := orderedmap.NewOrderedMap()
+	om := orderedmap.New()
 
 	for i := 0; i < n; i++ {
 		// Insert data into OrderedMap
-		om.Set(i, fmt.Sprintf("%d", i * i))
+		om.Set(i, fmt.Sprintf("%d", i*i))
 	}
 
 	// Iterate though values
@@ -55,7 +55,7 @@ type MyStruct struct {
 }
 
 func CustomStruct() {
-	om := orderedmap.NewOrderedMap()
+	om := orderedmap.New()
 	om.Set("one", &MyStruct{1, 1.1})
 	om.Set("two", &MyStruct{2, 2.2})
 	om.Set("three", &MyStruct{3, 3.3})
