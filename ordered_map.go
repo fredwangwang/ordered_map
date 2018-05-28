@@ -11,7 +11,7 @@ type OrderedMap struct {
 	list   *list.List
 }
 
-func NewOrderedMap() *OrderedMap {
+func New() *OrderedMap {
 	om := &OrderedMap{
 		store:  make(map[interface{}]interface{}),
 		mapper: make(map[interface{}]*list.Element),
@@ -20,8 +20,8 @@ func NewOrderedMap() *OrderedMap {
 	return om
 }
 
-func NewOrderedMapWithArgs(args []*KVPair) *OrderedMap {
-	om := NewOrderedMap()
+func NewWithArgs(args []*KVPair) *OrderedMap {
+	om := New()
 	om.update(args)
 	return om
 }
@@ -35,9 +35,6 @@ func (om *OrderedMap) update(args []*KVPair) {
 func (om *OrderedMap) Set(key interface{}, value interface{}) {
 	if _, ok := om.store[key]; ok == false {
 		om.list.PushBack(key)
-		//last := root.Prev
-		//last.Next = newNode(last, root, key)
-		//root.Prev = last.Next
 		om.mapper[key] = om.list.Back()
 	}
 	om.store[key] = value

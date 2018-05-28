@@ -16,7 +16,7 @@ func testStringInt() []*KVPair {
 
 func TestSetData(t *testing.T) {
 	expected := testStringInt()
-	om := NewOrderedMap()
+	om := New()
 	if om == nil {
 		t.Error("Failed to create OrderedMap")
 	}
@@ -32,7 +32,7 @@ func TestSetData(t *testing.T) {
 
 func TestGetData(t *testing.T) {
 	data := testStringInt()
-	om := NewOrderedMapWithArgs(data)
+	om := NewWithArgs(data)
 
 	for _, kvp := range data {
 		val, ok := om.Get(kvp.Key)
@@ -48,7 +48,7 @@ func TestGetData(t *testing.T) {
 
 func TestDeleteData(t *testing.T) {
 	data := testStringInt()
-	om := NewOrderedMapWithArgs(data)
+	om := NewWithArgs(data)
 
 	testKey := data[2].Key
 
@@ -86,7 +86,7 @@ func TestDeleteData(t *testing.T) {
 
 func TestIterator(t *testing.T) {
 	sample := testStringInt()
-	om := NewOrderedMapWithArgs(sample)
+	om := NewWithArgs(sample)
 	iter := om.UnsafeIter()
 	if iter == nil {
 		t.Error("Failed to create OrderedMap")
@@ -104,7 +104,7 @@ func TestIterator(t *testing.T) {
 
 func TestIteratorFunc(t *testing.T) {
 	sample := testStringInt()
-	om := NewOrderedMapWithArgs(sample)
+	om := NewWithArgs(sample)
 
 	iter := om.IterFunc()
 	if iter == nil {
@@ -123,7 +123,7 @@ func TestIteratorFunc(t *testing.T) {
 
 func TestLenNonEmpty(t *testing.T) {
 	data := testStringInt()
-	om := NewOrderedMapWithArgs(data)
+	om := NewWithArgs(data)
 
 	if om.Len() != len(data) {
 		t.Fatal("Unexpected length")
@@ -131,7 +131,7 @@ func TestLenNonEmpty(t *testing.T) {
 }
 
 func TestLenEmpty(t *testing.T) {
-	om := NewOrderedMap()
+	om := New()
 
 	if om.Len() != 0 {
 		t.Fatal("Unexpected length")
