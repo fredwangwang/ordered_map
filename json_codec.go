@@ -126,7 +126,7 @@ func mapToOrderedMap(om *OrderedMap, s string, m map[string]interface{}) {
 			mapToOrderedMap(&oo, contentStr, contentTyped)
 			m[contentKey] = oo
 		case []interface{}:
-			parseSliceInMap(om, contentStr, contentTyped)
+			parseJSONSliceInMap(om, contentStr, contentTyped)
 		}
 
 	}
@@ -147,7 +147,7 @@ func mapToOrderedMap(om *OrderedMap, s string, m map[string]interface{}) {
 	om.store = mInter
 }
 
-func parseSliceInMap(om *OrderedMap, str string, content []interface{}) {
+func parseJSONSliceInMap(om *OrderedMap, str string, content []interface{}) {
 	for i, item := range content {
 		switch itemTyped := item.(type) {
 		case map[string]interface{}: // map
@@ -160,7 +160,7 @@ func parseSliceInMap(om *OrderedMap, str string, content []interface{}) {
 		case []interface{}: // slice
 			str = str[strings.IndexByte(str, '['):]
 			idx := findClosingBraces(str, '[', ']') + 1
-			parseSliceInMap(om, str[:idx], itemTyped)
+			parseJSONSliceInMap(om, str[:idx], itemTyped)
 			str = str[idx:]
 		default: // scalar
 			itemStr := fmt.Sprint(itemTyped)
