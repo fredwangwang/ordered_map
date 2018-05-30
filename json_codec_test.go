@@ -4,6 +4,7 @@ import (
 	"testing"
 	"encoding/json"
 	"fmt"
+	"log"
 )
 
 func TestBlankMarshalJSON(t *testing.T) {
@@ -109,25 +110,42 @@ func TestUnmarshalJSON(t *testing.T) {
   "orderedmap": {
     "e": 1,
     "a { nested key with brace": "with a }}}} }} {{{ brace value",
-	"after": {
-		"link": "test {{{ with even deeper nested braces }"
-	}
+    "after": {
+      "link": "test {{{ with even deeper nested braces }"
+    }
   },
   "test\"ing": 9,
   "after": 1,
   "multitype_array": [
     "test",
-	1,
-	{ "map": "obj", "it" : 5, ":colon in key": "colon: in value" },
-	[{"inner": "map"}]
+    1,
+    {
+      "map": "obj",
+      "it": 5,
+      ":colon in key": "colon: in value"
+    },
+    [
+      {
+        "inner": "map"
+      }
+    ]
   ],
   "should not break with { character in key": 1
 }`
 	om := New()
-	err := json.Unmarshal([]byte(s), om)
+	err := json.Unmarshal([]byte(s), &om)
 	if err != nil {
-		t.Error("JSON Unmarshal error", err)
+		t.Error("YAML Unmarshal error", err)
 	}
+	sout, err := json.MarshalIndent(&om, "", "  ")
+	if err != nil {
+		t.Error("YAML Marshal error", err)
+	}
+	if string(sout) != s {
+		log.Println(string(sout))
+		t.Error("YAML Marshal/Unmarshal doesn't match")
+	}
+
 	// Check the root keys
 	expectedKeys := []string{
 		"number",
