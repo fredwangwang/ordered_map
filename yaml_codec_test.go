@@ -4,22 +4,23 @@ import (
 	"testing"
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"log"
 )
 
 func TestMarshalYAML(t *testing.T) {
-	o := New()
+	om := New()
 	// number
-	o.Set("number", 3)
+	om.Set("number", 3)
 	// string
-	o.Set("string", "x")
+	om.Set("string", "x")
 	// new value keeps key in old position
-	o.Set("number", 4)
+	om.Set("number", 4)
 	// keys not sorted alphabetically
-	o.Set("z", 1)
-	o.Set("a", 2)
-	o.Set("b", 3)
+	om.Set("z", 1)
+	om.Set("a", 2)
+	om.Set("b", 3)
 	// slice
-	o.Set("slice", []interface{}{
+	om.Set("slice", []interface{}{
 		"1",
 		1,
 	})
@@ -27,10 +28,10 @@ func TestMarshalYAML(t *testing.T) {
 	v := New()
 	v.Set("e", 1)
 	v.Set("a", 2)
-	o.Set("orderedmap", v)
+	om.Set("orderedmap", v)
 	// double quote in key
-	o.Set(`test"ing`, 9)
-	bi, err := yaml.Marshal(o)
+	om.Set(`test"ing`, 9)
+	bi, err := yaml.Marshal(&om)
 	if err != nil {
 		t.Error("Marshalling yaml", err)
 	}
@@ -56,14 +57,13 @@ test"ing: 9
 }
 
 func TestUnmarshalYAML(t *testing.T) {
-	s := `---
-number: 4
+	s := `number: 4
 string: x
 z: 1
 a: should not break with unclosed { character in value
 b: 3
 slice:
-- '1'
+- "1"
 - 1
 orderedmap:
   e: 1
@@ -77,7 +77,7 @@ multitype_array:
 - 1
 - map: obj
   it: 5
-  ":colon in key": 'colon: in value'
+  :colon in key: 'colon: in value'
 - - inner: map
 should not break with { character in key: 1
 `
@@ -85,6 +85,14 @@ should not break with { character in key: 1
 	err := yaml.Unmarshal([]byte(s), &om)
 	if err != nil {
 		t.Error("YAML Unmarshal error", err)
+	}
+	sout, err := yaml.Marshal(&om)
+	if err != nil {
+		t.Error("YAML Marshal error", err)
+	}
+	if string(sout) != s {
+		log.Println(string(sout))
+		t.Error("YAML Marshal/Unmarshal doesn't match")
 	}
 	// Check the root keys
 	expectedKeys := []string{
@@ -190,9 +198,7 @@ func TestUnmarshalYAMLSpecialChars(t *testing.T) {
 }
 
 func TestUnmarshalYAMLArrayOfMaps(t *testing.T) {
-	s := `
----
-name: test
+	s := `name: test
 percent: 6
 breakdown:
 - name: a
@@ -203,12 +209,19 @@ breakdown:
   percent: 0.4
 - name: e
   percent: 2.7
-
 `
 	om := New()
 	err := yaml.Unmarshal([]byte(s), &om)
 	if err != nil {
-		t.Error("yaml Unmarshal error", err)
+		t.Error("YAML Unmarshal error", err)
+	}
+	sout, err := yaml.Marshal(&om)
+	if err != nil {
+		t.Error("YAML Marshal error", err)
+	}
+	if string(sout) != s {
+		log.Println(string(sout))
+		t.Error("YAML Marshal/Unmarshal doesn't match")
 	}
 	// Check the root keys
 	expectedKeys := []string{
