@@ -1,7 +1,7 @@
 all: build install 
 
 build:
-	go build
+	go get gopkg.in/yaml.v2 && go build
 
 install:
 	go install

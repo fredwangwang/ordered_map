@@ -124,7 +124,7 @@ func TestUnmarshalJSON(t *testing.T) {
   "should not break with { character in key": 1
 }`
 	om := New()
-	err := json.Unmarshal([]byte(s), &om)
+	err := json.Unmarshal([]byte(s), om)
 	if err != nil {
 		t.Error("JSON Unmarshal error", err)
 	}
