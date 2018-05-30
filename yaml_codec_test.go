@@ -182,8 +182,8 @@ should not break with { character in key: 1
 
 func TestUnmarshalYAMLSpecialChars(t *testing.T) {
 	s := `{ " \\\\\\\\\\\\ "  : { "\\\\\\" : "\\\\\"\\" }, "\\":  " \\\\ test " }`
-	o := New()
-	err := yaml.Unmarshal([]byte(s), &o)
+	om := New()
+	err := yaml.Unmarshal([]byte(s), &om)
 	if err != nil {
 		t.Error("yaml Unmarshal error with special chars", err)
 	}

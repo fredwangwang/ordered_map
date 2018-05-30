@@ -4,16 +4,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-//func iterateMap(om *OrderedMap) yaml.MapSlice {
-//	ret := yaml.MapSlice{}
-//
-//	iter := om.IterFunc()
-//	for kv, ok := iter(); ok; kv, ok = iter() {
-//		kv.
-//	}
-//
-//}
-
 func (om OrderedMap) MarshalYAML() (interface{}, error) {
 	ret := yaml.MapSlice{}
 
